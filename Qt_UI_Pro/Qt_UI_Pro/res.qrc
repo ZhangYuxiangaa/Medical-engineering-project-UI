@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/check.png</file>
+        <file>res/no_check.png</file>
+        <file>res/danger.png</file>
+    </qresource>
+</RCC>

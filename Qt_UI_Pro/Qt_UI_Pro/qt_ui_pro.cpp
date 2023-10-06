@@ -1,4 +1,4 @@
-#include "qt_ui_pro.h"
+﻿#include "qt_ui_pro.h"
 
 Qt_UI_Pro::Qt_UI_Pro(QWidget *parent)
     : QWidget(parent)
@@ -34,6 +34,11 @@ void Qt_UI_Pro::init_UI()
     connect(m_timer, &QTimer::timeout, this, &Qt_UI_Pro::update_time_widget);
     m_timer->start(10);
 
+    // 创建串口控制类
+    m_serial_port_control = new serial_port_control();
+
+    connect(m_serial_port_control, &serial_port_control::update_flow_data, this, &Qt_UI_Pro::update_show_flow_data);
+
 }
 
 // 创建上面的按钮
@@ -56,7 +61,7 @@ QWidget* Qt_UI_Pro::create_upper_button_widget()
                                           5, 250, 80);
 
     QPushButton *button_2 = create_button("准备",
-                                          "background:qlineargradient(x1:0, y1:0, x2:0.5, y2:1,stop:0 rgb(189, 212, 253), stop: 1 rgb(0, 117, 78));",
+                                          "background:qlineargradient(x1:0, y1:0, x2:0.5, y2:1,stop:0 rgb(189, 212, 253), stop: 1 rgb(0, 160, 78));",
                                           "color: rgb(0, 0, 0);",
                                           5,  120, 80);
 
@@ -66,7 +71,7 @@ QWidget* Qt_UI_Pro::create_upper_button_widget()
                                           5, 120, 80);
 
     QPushButton *button_4 = create_button("旁通\n自动",
-                                          "background:qlineargradient(x1:0, y1:0, x2:0.5, y2:1,stop:0 rgb(189, 212, 253), stop: 1 rgb(0, 117, 78));",
+                                          "background:qlineargradient(x1:0, y1:0, x2:0.5, y2:1,stop:0 rgb(189, 212, 253), stop: 1 rgb(0, 160, 78));",
                                           "color: rgb(0, 0, 0);",
                                           5, 120, 80);
 
@@ -86,7 +91,7 @@ QWidget* Qt_UI_Pro::create_upper_button_widget()
     QPushButton *button_7 = create_button("退出",
                                           "background-color: rgb(221, 178, 84);",
                                           "color: rgb(0, 0, 0);",
-                                          0, 60, 30);
+                                          0, 80, 40);
 
     QWidget *blank_widget = new QWidget();
     blank_widget->setStyleSheet("background-color: rgb(221, 178, 84);color: rgb(0, 0, 0);border-radius:40px;");
@@ -192,7 +197,7 @@ QWidget* Qt_UI_Pro::create_center_widget_1()
     QGridLayout* center_widget_1_layout = new QGridLayout(center_widget_1);
     center_widget_1_layout->setAlignment(Qt::AlignTop);
     center_widget_1_layout->setVerticalSpacing(20);
-    center_widget_1->setStyleSheet("background-color: rgb(184, 213, 252);");
+    center_widget_1->setStyleSheet("background-color: rgb(146, 192, 254);");
 
     QFont m_font;
     m_font.setPointSize(18);
@@ -327,7 +332,6 @@ QTabWidget* Qt_UI_Pro::create_center_widget_3()
     return center_widget_3;
 }
 
-// 右边布局设置
 QWidget* Qt_UI_Pro::create_center_widget_4()
 {
     QWidget* center_widget_4 = new QWidget();
@@ -379,10 +383,10 @@ QWidget* Qt_UI_Pro::create_center_widget_4_1()
     label_4->setStyleSheet("background-color: transparent;");
 
 
-    QLabel *label_5 = new QLabel("18.  34");
+    flow_label_5 = new QLabel("18.  34");
     m_font.setPointSize(40);
-    label_5->setFont(m_font);
-    label_5->setStyleSheet("color: rgb(63, 118, 154);background-color: transparent;");
+    flow_label_5->setFont(m_font);
+    flow_label_5->setStyleSheet("color: rgb(63, 118, 154);background-color: transparent;");
 
     QLabel *label_6 = new QLabel("mL/s");
     m_font.setPointSize(15);
@@ -395,7 +399,7 @@ QWidget* Qt_UI_Pro::create_center_widget_4_1()
     center_widget_4_1_layout->addWidget(label_3, 2, 3, 1, 1);
 
     center_widget_4_1_layout->addWidget(label_4, 0, 4, 1, 1);
-    center_widget_4_1_layout->addWidget(label_5, 1, 5, 1, 3);
+    center_widget_4_1_layout->addWidget(flow_label_5, 1, 5, 1, 3);
     center_widget_4_1_layout->addWidget(label_6, 2, 7, 1, 1);
 
     return center_widget_4_1;
@@ -465,7 +469,7 @@ QWidget* Qt_UI_Pro::create_center_widget_4_3()
     center_widget_4_3_layout->setSpacing(15);
 
     center_widget_4_3->setObjectName("center_widget_4_3");
-    center_widget_4_3->setStyleSheet("#center_widget_4_3{border:2px solid rgb(70, 118, 203);background-color: rgb(184, 206, 255);}");
+    center_widget_4_3->setStyleSheet("#center_widget_4_3{border:2px solid rgb(70, 118, 203);background-color: rgb(184, 213, 252);}");
 
     QFont m_font;
     m_font.setBold(true);
@@ -475,9 +479,9 @@ QWidget* Qt_UI_Pro::create_center_widget_4_3()
     QLabel *label_2 = new QLabel("中钾电磁阀");
     QLabel *label_3 = new QLabel("高钾电磁阀");
 
-    label_1->setStyleSheet("background-color: rgb(184, 206, 255);color: rgb(25, 28, 27);border-radius:0px;");
-    label_2->setStyleSheet("background-color: rgb(184, 206, 255);color: rgb(25, 28, 27);border-radius:0px;");
-    label_3->setStyleSheet("background-color: rgb(184, 206, 255);color: rgb(25, 28, 27);border-radius:0px;");
+    label_1->setStyleSheet("background-color: rgb(184, 213, 252);color: rgb(25, 28, 27);border-radius:0px;");
+    label_2->setStyleSheet("background-color: rgb(184, 213, 252);color: rgb(25, 28, 27);border-radius:0px;");
+    label_3->setStyleSheet("background-color: rgb(184, 213, 252);color: rgb(25, 28, 27);border-radius:0px;");
 
     label_1->setFont(m_font);
     label_2->setFont(m_font);
@@ -492,11 +496,11 @@ QWidget* Qt_UI_Pro::create_center_widget_4_3()
     QLabel *label_5 = new QLabel("开");
     QLabel *label_6 = new QLabel("关");
 
-    label_4->setStyleSheet("background-color: rgb(184, 206, 255);color: rgb(47, 105, 1);border-radius:0px;");
-    label_5->setStyleSheet("background-color: rgb(184, 206, 255);color: rgb(47, 105, 1);border-radius:0px;");
-    label_6->setStyleSheet("background-color: rgb(184, 206, 255);color: rgb(47, 105, 1);border-radius:0px;");
+    label_4->setStyleSheet("background-color: rgb(184, 213, 252);color: rgb(47, 105, 1);border-radius:0px;");
+    label_5->setStyleSheet("background-color: rgb(184, 213, 252);color: rgb(47, 105, 1);border-radius:0px;");
+    label_6->setStyleSheet("background-color: rgb(184, 213, 252);color: rgb(47, 105, 1);border-radius:0px;");
 
-    m_font.setPointSize(30);
+    m_font.setPointSize(25);
     label_4->setFont(m_font);
     label_5->setFont(m_font);
     label_6->setFont(m_font);
@@ -512,7 +516,6 @@ QWidget* Qt_UI_Pro::create_center_widget_4_3()
     return center_widget_4_3;
 }
 
-//创建时间框--
 QWidget *Qt_UI_Pro::create_time_widget()
 {
     QWidget *time_widget = new QWidget();
@@ -532,7 +535,7 @@ QWidget *Qt_UI_Pro::create_time_widget()
     time_label->setStyleSheet("color:rgb(16, 24, 86);");
 
 //    QCheckBox *checkbox = new QCheckBox("空");
-//    checkbox->setStyleSheet("QCheckBox{color:rgb(16, 24, 86);}QCheckBox::indicator:checked {image: url(:/res/no_check.png);}QCheckBox::indicator:unchecked {image: url(:/res/no_check.png);}");
+//    checkbox->setStyleSheet("QCheckBox{color:rgb(16, 24, 86);}QCheckBox::indicator:checked {image: url(:/res/check.png);}QCheckBox::indicator:unchecked {image: url(:/res/no_check.png);}");
 //    checkbox->setChecked(true);
 //    checkbox->setFont(font);
 
@@ -593,7 +596,6 @@ QWidget* Qt_UI_Pro::create_right_button_widget()
 }
 
 
-
 // 创建底部界面
 QWidget* Qt_UI_Pro::create_right_down_widget()
 {
@@ -635,6 +637,27 @@ QWidget* Qt_UI_Pro::create_right_down_widget()
     return right_down_widget;
 }
 
+
+////创建按钮函数
+//QPushButton *Qt_UI_Pro::create_button(QString text, QString color, QString font_color,
+//                                      int radius, int width, int height)
+//{
+//    QPushButton *button = new QPushButton();
+//    button->setText(text);
+//    button->setFixedHeight(height);
+//    button->setFixedWidth(width);
+//    QFont font;
+//    font.setPixelSize(18);
+//    font.setBold(true);
+//    button->setFont(font);
+
+//    QString radius_Sheet = QString("border-radius: %0").arg(radius);
+//    QString StyleSheet = color + font_color+ radius_Sheet;
+
+//    button->setStyleSheet(StyleSheet);
+
+//    return button;
+//}
 
 //创建按钮函数--
 QPushButton *Qt_UI_Pro::create_button(QString text, QString color, QString font_color,
@@ -717,6 +740,12 @@ void Qt_UI_Pro::update_time_widget()
 void Qt_UI_Pro::upper_button_7_clicked()
 {
     exit(0);
+}
+
+// 更新流量数据的显示
+void Qt_UI_Pro::update_show_flow_data(QString data)
+{
+    flow_label_5->setText(data);
 }
 
 Qt_UI_Pro::~Qt_UI_Pro()

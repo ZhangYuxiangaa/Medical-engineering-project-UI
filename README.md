@@ -12,3 +12,12 @@ sudo apt-get install libqt5serialport5-dev
 
 参考[https://blog.csdn.net/gmh_gmh/article/details/111325595](https://blog.csdn.net/gmh_gmh/article/details/111325595)
 
+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
+
+# 3、串口配置
+
+```plain
+ls -l /dev/ttyUSB*
+sudo chmod 777 /dev/ttyUSB0
+```
+

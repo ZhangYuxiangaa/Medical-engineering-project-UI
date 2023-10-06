@@ -1,4 +1,4 @@
-#ifndef QT_UI_PRO_H
+﻿#ifndef QT_UI_PRO_H
 #define QT_UI_PRO_H
 
 #include <QWidget>
@@ -12,6 +12,8 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QProgressBar>
+
+#include "serial_port_control.h"
 
 class Qt_UI_Pro : public QWidget
 {
@@ -49,5 +51,14 @@ public:
 
     // 实时更新时间
     void update_time_widget();
+
+    // 创建串口控制类
+    serial_port_control *m_serial_port_control;
+
+
+    // 更新流量数据的显示
+    void update_show_flow_data(QString data);
+
+    QLabel *flow_label_5;
 };
 #endif // QT_UI_PRO_H

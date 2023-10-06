@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,10 +17,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    qt_ui_pro.cpp
+    qt_ui_pro.cpp \
+    serial_port_control.cpp
 
 HEADERS += \
-    qt_ui_pro.h
+    qt_ui_pro.h \
+    serial_port_control.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

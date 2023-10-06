@@ -531,13 +531,13 @@ QWidget *Qt_UI_Pro::create_time_widget()
     time_label->setFont(font);
     time_label->setStyleSheet("color:rgb(16, 24, 86);");
 
-    QCheckBox *checkbox = new QCheckBox("空");
-    checkbox->setStyleSheet("QCheckBox{color:rgb(16, 24, 86);}QCheckBox::indicator:checked {image: url(:/res/no_check.png);}QCheckBox::indicator:unchecked {image: url(:/res/no_check.png);}");
-    checkbox->setChecked(true);
-    checkbox->setFont(font);
+//    QCheckBox *checkbox = new QCheckBox("空");
+//    checkbox->setStyleSheet("QCheckBox{color:rgb(16, 24, 86);}QCheckBox::indicator:checked {image: url(:/res/no_check.png);}QCheckBox::indicator:unchecked {image: url(:/res/no_check.png);}");
+//    checkbox->setChecked(true);
+//    checkbox->setFont(font);
 
     time_widget_layout->addWidget(time_label, 0, 0, 3, 1);
-    time_widget_layout->addWidget(checkbox, 3, 0, 2, 1);
+//    time_widget_layout->addWidget(checkbox, 3, 0, 2, 1);
 
     return time_widget;
 }

@@ -288,8 +288,6 @@ QTabWidget* Qt_UI_Pro::create_center_widget_3()
 {
     QTabWidget* center_widget_3 = new QTabWidget();
 
-
-
 //    156, 188, 255
     center_widget_3->setStyleSheet("QTabWidget::pane {border: 0px;}\
                                   QTabBar::tab:selected{background:qlineargradient(x1:0, y1:0, x2:0, y2:0.4,stop:0 rgb(164, 66, 147), stop: 0.4 rgb(206, 180, 253));}\
@@ -745,7 +743,19 @@ void Qt_UI_Pro::upper_button_7_clicked()
 // 更新流量数据的显示
 void Qt_UI_Pro::update_show_flow_data(QString data)
 {
-    flow_label_5->setText(data);
+    QString newdata = "0x" + data;
+    qDebug() << "***************"<< newdata;
+    bool ok;
+    int dec = newdata.toInt(&ok,16);
+    QString num = QString::number(dec,0,2);
+
+
+
+//    QByteArray hexArray = QByteArray::fromHex(newdata.toUtf8());
+//    quint16 decimalNUmber = hexArray.toUShort();
+//    QString data1 = QString::number(decimalNUmber);
+
+    flow_label_5->setText(num);
 }
 
 Qt_UI_Pro::~Qt_UI_Pro()

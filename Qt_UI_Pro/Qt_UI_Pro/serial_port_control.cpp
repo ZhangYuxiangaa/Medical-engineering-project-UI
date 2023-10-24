@@ -44,9 +44,21 @@ void serial_port_control::test_timer()
 {
     qDebug() << "send";
 
-    QString test_data = "0x20";
+    QString test_data = "aaaaaaa\r\n";
+    QByteArray c = test_data.toLocal8Bit();
+    serial->write(c);
 
-    serial->write(QByteArray::fromHex(test_data.toLatin1()));
+
+//    if(serial->write(QByteArray::fromHex(test_data.toLatin1())) > 0){
+
+//        qDebug() << "数据发送成功：" << QByteArray::fromHex(test_data.toLatin1()) ;
+
+//    }else{
+//         qDebug() << "数据发送失败！";
+//    }
+
+
+
 
 }
 
@@ -58,7 +70,6 @@ void serial_port_control::serialPortReadyRead()
     QByteArray Serial_buff = serial->readAll();
 
     qDebug() << "读取数据";
-
 
     QString strDis;
     QByteArray hexData = Serial_buff.toHex();
